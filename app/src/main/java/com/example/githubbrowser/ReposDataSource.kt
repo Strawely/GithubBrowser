@@ -5,10 +5,12 @@ import com.example.githubbrowser.model.RepositoryDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class ReposDataSource(
     private val reposListInteractor: ReposListInteractor,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val errorCallback: () -> Unit = { }
 ) : ItemKeyedDataSource<Long, RepositoryDto>() {
     override fun loadInitial(
         params: LoadInitialParams<Long>,
@@ -16,7 +18,11 @@ class ReposDataSource(
     ) {
         scope.launch {
             reposListInteractor.getReposList().collect { result ->
-                result?.let { callback.onResult(it, 0, it.size) }
+                if (result.data != null) {
+                    callback.onResult(result.data, 0, result.data.size)
+                } else {
+                    errorCallback()
+                }
             }
         }
     }
@@ -24,7 +30,11 @@ class ReposDataSource(
     override fun loadAfter(params: LoadParams<Long>, callback: LoadCallback<RepositoryDto>) {
         scope.launch {
             reposListInteractor.getReposList(params.key).collect { result ->
-                result?.let { callback.onResult(it) }
+                if (result.data != null) {
+                    callback.onResult(result.data)
+                } else {
+                    errorCallback
+                }
             }
         }
     }

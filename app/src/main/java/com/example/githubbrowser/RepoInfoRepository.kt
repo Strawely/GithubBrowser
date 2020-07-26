@@ -4,8 +4,9 @@ import com.example.githubbrowser.model.CommitDto
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 import java.lang.Exception
+import javax.inject.Inject
 
-class RepoInfoRepository(private val api: GithubApi) {
+class RepoInfoRepository @Inject constructor(private val api: GithubApi) {
     fun getCommitInfo(commitsUrl: String) = flow {
         try {
             val value = api.getCommitInfo(commitsUrl)

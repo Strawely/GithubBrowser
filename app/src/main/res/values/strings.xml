@@ -5,4 +5,5 @@
     <string name="last_commit">Last commit:</string>
     <string name="author">Author:</string>
     <string name="parents_sha_s">Parents sha\'s</string>
+    <string name="something_wrong_happend">Something wrong happend</string>
 </resources>

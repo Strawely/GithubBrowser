@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.githubbrowser.R
 import com.example.githubbrowser.RepoNavigateIntent
 import com.example.githubbrowser.databinding.FragmentRepoInfoBinding
 import com.example.githubbrowser.viewmodel.CommitInfo
 import com.example.githubbrowser.viewmodel.RepoInfoViewModel
+import javax.inject.Inject
 
 private const val ARG_AVATAR = "avatar"
 private const val ARG_LOGIN = "login"
@@ -19,8 +21,13 @@ private const val ARG_NAME = "name"
 private const val ARG_COMMIT = "commit"
 
 class RepoInfoFragment : Fragment() {
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    private val viewModel by lazy {
+        ViewModelProvider(this, factory)[RepoInfoViewModel::class.java]
+    }
     private var navigateIntent: RepoNavigateIntent? = null
-    private val viewModel by lazy { RepoInfoViewModel() }
     private lateinit var binding: FragmentRepoInfoBinding
     private val adapter by lazy { RepoShaAdapter() }
 
@@ -29,6 +36,7 @@ class RepoInfoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainActivity).appComponent.inject(this)
         binding = FragmentRepoInfoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,7 +58,10 @@ class RepoInfoFragment : Fragment() {
         navigateIntent?.let { viewModel.init(it) }
         binding.recyclerParentsSha.adapter = adapter
         viewModel.lastCommitLiveData.observe(viewLifecycleOwner, Observer(::render))
-        binding.textName.text = navigateIntent?.name
+        binding.toolbar.title = navigateIntent?.name
+        binding.toolbar.setNavigationOnClickListener {
+            requireFragmentManager().popBackStack()
+        }
         binding.textAuthorLogin.text = navigateIntent?.login
         Glide.with(requireContext())
             .load(navigateIntent?.avatarUrl)

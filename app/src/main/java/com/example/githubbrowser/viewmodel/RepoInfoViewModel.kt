@@ -10,14 +10,19 @@ import com.example.githubbrowser.RepoInfoRepository
 import com.example.githubbrowser.RepoNavigateIntent
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Named
 
-class RepoInfoViewModel : ViewModel() {
+class RepoInfoViewModel @Inject
+constructor(
+    private val repository: RepoInfoRepository,
+    @Named("BASE_URL") private val baseUrl: String
+) : ViewModel() {
     private val _lastCommitLiveData = MutableLiveData<CommitInfo>()
     val lastCommitLiveData: LiveData<CommitInfo> get() = _lastCommitLiveData
 
-    val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-    private val repository = RepoInfoRepository(GithubApi.retrofit().create(GithubApi::class.java))
-    private val baseUrl = "https://api.github.com"
+    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale("ru", "RU"))
 
     fun init(navigateIntent: RepoNavigateIntent) {
         getCommitInfo(navigateIntent.commitUrl)

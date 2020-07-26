@@ -1,17 +1,24 @@
 package com.example.githubbrowser
 
+import com.example.githubbrowser.model.RepositoryDto
 import kotlinx.coroutines.flow.flow
-import org.intellij.lang.annotations.Flow
 import timber.log.Timber
 import java.lang.Exception
+import javax.inject.Inject
 
-class ReposListInteractor(private val api: GithubApi) {
+class ReposListInteractor @Inject constructor(private val api: GithubApi) {
     fun getReposList(since: Long? = null) = flow {
         try {
-            emit(api.getReposList(since ?: 0))
+            val result = api.getReposList(since ?: 0)
+            emit(ReposListResult(result))
         } catch (e: Exception) {
             Timber.e(e)
-            emit(null)
+            emit(ReposListResult(error = e))
         }
     }
 }
+
+data class ReposListResult(
+    val data: List<RepositoryDto>? = null,
+    val error: Exception? = null
+)

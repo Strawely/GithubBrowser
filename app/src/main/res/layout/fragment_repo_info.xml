@@ -4,27 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/default_margin"
     tools:context=".ui.RepoInfoFragment">
 
-    <TextView
-        android:id="@+id/text_name"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Repo name" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:navigationIcon="@drawable/ic_baseline_arrow_white_24"
+        tools:title="@tools:sample/lorem"
+        app:titleTextColor="@android:color/white"/>
 
     <TextView
         android:id="@+id/text_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:text="@string/author"
+        android:layout_margin="@dimen/default_margin"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_name" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
         android:id="@+id/text_author_login"
@@ -51,6 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginStart="@dimen/default_margin"
         android:text="@string/last_commit"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,14 +63,16 @@
 
     <TextView
         android:id="@+id/text_commit_msg"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:ellipsize="end"
         android:maxLines="2"
+        app:layout_constraintHorizontal_bias="0"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintBaseline_toBaselineOf="@id/text_last_commit"
         app:layout_constraintStart_toEndOf="@id/text_last_commit"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="\@story Last commit [XXX-XXX]" />
 
     <TextView
@@ -73,6 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_commit_msg"
@@ -92,6 +100,7 @@
         android:id="@+id/text_commit_parent_sha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:text="@string/parents_sha_s"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
@@ -102,6 +111,7 @@
         android:id="@+id/recycler_parents_sha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_marginTop="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
